@@ -1,45 +1,51 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <script type="module" src="https://early.webawesome.com/webawesome@3.0.0-beta.2/dist/webawesome.loader.js"></script>
+</head>
 <body>
 <div id="product-list" th:fragment="productList">
-    <h4>
-        <i class="fas fa-boxes me-2"></i>
+    <wa-heading level="4" class="mb-4">
+        <wa-icon name="box" class="me-2"></wa-icon>
         Products (<span th:text="${#lists.size(products)}">0</span>)
-    </h4>
+    </wa-heading>
 
-    <div class="alert alert-info" th:if="${#lists.isEmpty(products)}">
-        <i class="fas fa-info-circle me-2"></i>
+    <wa-alert variant="info" th:if="${#lists.isEmpty(products)}">
+        <wa-icon name="info-circle" slot="start"></wa-icon>
         No products available. Add your first product or fetch products from the external API!
-    </div>
+    </wa-alert>
 
-    <div class="row" th:unless="${#lists.isEmpty(products)}">
-        <div class="col-md-4 mb-4" th:each="product : ${products}">
-            <div class="card h-100 product-card">
-                <div class="card-body d-flex p-3">
-                    <!-- Image Section (Left) -->
-                    <div class="product-image-container me-3" style="min-width: 120px; max-width: 120px;">
-                        <div th:if="${product.imageUrl}" class="h-100 d-flex align-items-center">
-                            <img th:src="${product.imageUrl}" class="img-fluid rounded" alt="Product Image">
-                        </div>
-                        <div th:unless="${product.imageUrl}" class="h-100 d-flex align-items-center justify-content-center">
-                            <i class="fas fa-image fa-3x text-secondary"></i>
-                        </div>
-                    </div>
-                    <!-- Product Details (Right) -->
-                    <div class="product-details">
-                        <h5 class="card-title" th:text="${product.title}">Product Title</h5>
-                        <h6 class="card-subtitle mb-2 text-muted">
-                            <span th:if="${product.vendor}" th:text="${product.vendor}">Vendor</span>
-                            <span th:if="${product.productType}" class="badge bg-secondary ms-2" th:text="${product.productType}">Type</span>
-                        </h6>
-                        <p class="card-text">
-                            Price: <span class="text-success" th:text="${'$' + product.price}">$0.00</span>
-                        </p>
-                    </div>
-                </div>
+    <wa-grid columns="3" gap="4" th:unless="${#lists.isEmpty(products)}">
+        <wa-card th:each="product : ${products}" class="product-card">
+            <div slot="body" class="d-flex p-3">
+                <!-- Image Section (Left) -->
+                <wa-flex justify="center" align="center" class="me-3" style="min-width: 120px; max-width: 120px;">
+                    <wa-image th:if="${product.imageUrl}"
+                             th:src="${product.imageUrl}"
+                             class="rounded"
+                             fit="cover"
+                             alt="Product Image">
+                    </wa-image>
+                    <wa-icon th:unless="${product.imageUrl}"
+                            name="image"
+                            size="3x"
+                            class="text-secondary">
+                    </wa-icon>
+                </wa-flex>
+                <!-- Product Details (Right) -->
+                <wa-stack gap="2">
+                    <wa-heading level="5" th:text="${product.title}">Product Title</wa-heading>
+                    <wa-flex gap="2" align="center">
+                        <wa-text muted th:if="${product.vendor}" th:text="${product.vendor}">Vendor</wa-text>
+                        <wa-badge variant="secondary" th:if="${product.productType}" th:text="${product.productType}">Type</wa-badge>
+                    </wa-flex>
+                    <wa-text>
+                        Price: <wa-text color="success" th:text="${'$' + product.price}">$0.00</wa-text>
+                    </wa-text>
+                </wa-stack>
             </div>
-        </div>
-    </div>
+        </wa-card>
+    </wa-grid>
 </div>
 </body>
 </html>

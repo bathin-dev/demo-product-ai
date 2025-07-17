@@ -1,75 +1,80 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <script type="module" src="https://early.webawesome.com/webawesome@3.0.0-beta.2/dist/webawesome.loader.js"></script>
+</head>
 <body>
     <div th:fragment="productForm">
-        <div class="card mb-4">
-            <div class="card-header bg-light">
-                <h5 class="mb-0"><i class="fas fa-plus-circle me-2"></i>Add New Product</h5>
+        <wa-card class="mb-4">
+            <div slot="header" class="bg-light">
+                <wa-heading level="5" class="mb-0">
+                    <wa-icon name="plus-circle" class="me-2"></wa-icon>Add New Product
+                </wa-heading>
             </div>
-            <div class="card-body">
+            <div slot="body">
                 <form th:action="@{/products}" th:object="${newProduct}" method="post"
                       hx-post="/products" 
                       hx-target="#product-list"
                       hx-swap="outerHTML"
                       hx-indicator=".loading-indicator">
                     
-                    <div class="row g-3">
-                        <div class="col-md-6">
-                            <div class="form-floating mb-3">
-                                <input type="text" class="form-control" id="title" th:field="*{title}" 
-                                       th:classappend="${#fields.hasErrors('title') ? 'is-invalid' : ''}">
-                                <label for="title">Product Title</label>
-                                <div class="invalid-feedback" th:if="${#fields.hasErrors('title')}" th:errors="*{title}">
-                                    Product title is required
-                                </div>
-                            </div>
-                        </div>
-                        
-                        <div class="col-md-6">
-                            <div class="form-floating mb-3">
-                                <input type="number" class="form-control" id="price" th:field="*{price}" step="0.01"
-                                       th:classappend="${#fields.hasErrors('price') ? 'is-invalid' : ''}">
-                                <label for="price">Price</label>
-                                <div class="invalid-feedback" th:if="${#fields.hasErrors('price')}" th:errors="*{price}">
-                                    Price is required and must be positive
-                                </div>
-                            </div>
-                        </div>
-                        
-                        <div class="col-md-6">
-                            <div class="form-floating mb-3">
-                                <input type="text" class="form-control" id="vendor" th:field="*{vendor}">
-                                <label for="vendor">Vendor</label>
-                            </div>
-                        </div>
-                        
-                        <div class="col-md-6">
-                            <div class="form-floating mb-3">
-                                <input type="text" class="form-control" id="productType" th:field="*{productType}">
-                                <label for="productType">Product Type</label>
-                            </div>
-                        </div>
-                        
-                        <div class="col-md-12">
-                            <div class="form-floating mb-3">
-                                <input type="text" class="form-control" id="imageUrl" th:field="*{imageUrl}">
-                                <label for="imageUrl">Image URL</label>
-                            </div>
-                        </div>
-                        
-                    </div>
-                    
-                    <div class="d-grid gap-2 d-md-flex justify-content-md-end">
-                        <button type="submit" class="btn btn-primary">
-                            <i class="fas fa-save me-2"></i>Save Product
+                    <wa-grid columns="2" gap="3">
+                        <wa-form-group>
+                            <wa-input type="text" id="title" th:field="*{title}"
+                                    th:classappend="${#fields.hasErrors('title') ? 'is-invalid' : ''}"
+                                    label="Product Title"
+                                    floating>
+                            </wa-input>
+                            <wa-text color="danger" th:if="${#fields.hasErrors('title')}" th:errors="*{title}">
+                                Product title is required
+                            </wa-text>
+                        </wa-form-group>
+
+                        <wa-form-group>
+                            <wa-input type="number" id="price" th:field="*{price}" step="0.01"
+                                    th:classappend="${#fields.hasErrors('price') ? 'is-invalid' : ''}"
+                                    label="Price"
+                                    floating>
+                            </wa-input>
+                            <wa-text color="danger" th:if="${#fields.hasErrors('price')}" th:errors="*{price}">
+                                Price is required and must be positive
+                            </wa-text>
+                        </wa-form-group>
+
+                        <wa-form-group>
+                            <wa-input type="text" id="vendor" th:field="*{vendor}"
+                                    label="Vendor"
+                                    floating>
+                            </wa-input>
+                        </wa-form-group>
+
+                        <wa-form-group>
+                            <wa-input type="text" id="productType" th:field="*{productType}"
+                                    label="Product Type"
+                                    floating>
+                            </wa-input>
+                        </wa-form-group>
+
+                        <wa-form-group class="col-span-2">
+                            <wa-input type="text" id="imageUrl" th:field="*{imageUrl}"
+                                    label="Image URL"
+                                    floating>
+                            </wa-input>
+                        </wa-form-group>
+                    </wa-grid>
+
+                    <wa-flex justify="end" gap="2" class="mt-4">
+                        <wa-button type="submit" variant="primary">
+                            <wa-icon name="save" slot="start"></wa-icon>
+                            Save Product
                             <span class="loading-indicator ms-2">
-                                <span class="spinner-border spinner-border-sm" role="status"></span>
+                                <wa-spinner size="sm"></wa-spinner>
                             </span>
-                        </button>
-                    </div>
+                        </wa-button>
+                    </wa-flex>
                 </form>
             </div>
-        </div>
+        </wa-card>
     </div>
 </body>
 </html>

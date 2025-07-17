@@ -5,12 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Product Management</title>
     
-    <!-- Bootstrap CSS -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
-    
-    <!-- Font Awesome -->
-    <link th:href="@{/webjars/font-awesome/6.4.2/css/all.min.css}" rel="stylesheet">
-    
+    <!-- WebAwesome -->
+    <script type="module" src="https://early.webawesome.com/webawesome@3.0.0-beta.2/dist/webawesome.loader.js"></script>
+
     <!-- HTMX -->
     <script th:src="@{/webjars/htmx.org/1.9.10/dist/htmx.min.js}" defer></script>
     
@@ -38,79 +35,73 @@
     </style>
 </head>
 <body>
-    <nav class="navbar navbar-expand-lg navbar-dark bg-primary mb-4">
-        <div class="container">
-            <a class="navbar-brand" href="/"><i class="fas fa-store me-2"></i>Product App</a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav">
-                    <li class="nav-item">
-                        <a class="nav-link" href="/"><i class="fas fa-home me-1"></i> Home</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link active" href="/products"><i class="fas fa-box-open me-1"></i> Products</a>
-                    </li>
-                </ul>
+    <wa-navbar variant="primary" class="mb-4">
+        <wa-container>
+            <wa-navbar-brand href="/">
+                <wa-icon name="store" class="me-2"></wa-icon>Product App
+            </wa-navbar-brand>
+            <wa-navbar-toggle target="navbarNav"></wa-navbar-toggle>
+            <wa-navbar-collapse id="navbarNav">
+                <wa-navbar-nav>
+                    <wa-nav-item href="/">
+                        <wa-icon name="home" class="me-1"></wa-icon> Home
+                    </wa-nav-item>
+                    <wa-nav-item href="/products" active>
+                        <wa-icon name="box-open" class="me-1"></wa-icon> Products
+                    </wa-nav-item>
+                </wa-navbar-nav>
+            </wa-navbar-collapse>
+        </wa-container>
+    </wa-navbar>
+
+    <wa-container>
+        <wa-card class="mb-4">
+            <div slot="header" class="bg-primary text-white">
+                <wa-heading level="3" class="mb-0">
+                    <wa-icon name="box-open" class="me-2"></wa-icon>
+                    Product Management
+                </wa-heading>
             </div>
-        </div>
-    </nav>
-    
-    <div class="container">
-        <div class="row mb-4">
-            <div class="col-md-12">
-                <div class="card">
-                    <div class="card-header bg-primary text-white">
-                        <h3 class="mb-0">
-                            <i class="fas fa-box-open me-2"></i>
-                            Product Management
-                        </h3>
-                    </div>
-                    <div class="card-body">
-                        <div class="row mb-4">
-                            <div class="col-md-6">
-                                <button class="btn btn-primary load-button"
-                                        hx-get="/products/list"
-                                        hx-target="#product-list"
-                                        hx-indicator=".loading-indicator">
-                                    <span class="button-text"><i class="fas fa-sync-alt me-2"></i>Load Products</span>
-                                    <span class="loading-indicator">
-                                        <span class="spinner-border spinner-border-sm" role="status"></span>
-                                        Loading...
-                                    </span>
-                                </button>
-                                
-                                <button class="btn btn-success ms-2 load-button"
-                                        hx-get="/products/fetch"
-                                        hx-target="#product-list"
-                                        hx-indicator=".loading-indicator">
-                                    <span class="button-text"><i class="fas fa-cloud-download-alt me-2"></i>Fetch New Products</span>
-                                    <span class="loading-indicator">
-                                        <span class="spinner-border spinner-border-sm" role="status"></span>
-                                        Fetching...
-                                    </span>
-                                </button>
-                            </div>
-                        </div>
-                        
-                        <div th:replace="~{products/fragments/product-form :: productForm}"></div>
-                        
-                        <hr>
-                        
-                        <div id="product-list" hx-trigger="load" hx-get="/products/list">
-                            <div class="text-center p-5">
-                                <div class="spinner-border text-primary" role="status"></div>
-                                <p class="mt-2">Loading products...</p>
-                            </div>
-                        </div>
-                    </div>
+            <div slot="body">
+                <wa-flex gap="2" class="mb-4">
+                    <wa-button variant="primary" class="load-button"
+                            hx-get="/products/list"
+                            hx-target="#product-list"
+                            hx-indicator=".loading-indicator">
+                        <span class="button-text">
+                            <wa-icon name="sync-alt" class="me-2"></wa-icon>Load Products
+                        </span>
+                        <span class="loading-indicator">
+                            <wa-spinner size="sm"></wa-spinner>
+                            Loading...
+                        </span>
+                    </wa-button>
+
+                    <wa-button variant="success" class="load-button"
+                            hx-get="/products/fetch"
+                            hx-target="#product-list"
+                            hx-indicator=".loading-indicator">
+                        <span class="button-text">
+                            <wa-icon name="cloud-download-alt" class="me-2"></wa-icon>Fetch New Products
+                        </span>
+                        <span class="loading-indicator">
+                            <wa-spinner size="sm"></wa-spinner>
+                            Fetching...
+                        </span>
+                    </wa-button>
+                </wa-flex>
+
+                <div th:replace="~{products/fragments/product-form :: productForm}"></div>
+
+                <wa-divider class="my-4"></wa-divider>
+
+                <div id="product-list" hx-trigger="load" hx-get="/products/list">
+                    <!-- Product list will be loaded here -->
                 </div>
             </div>
-        </div>
-    </div>
-    
-    <!-- Bootstrap JS -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+        </wa-card>
+    </wa-container>
+
+    <!-- No need for Bootstrap JS since we're using WebAwesome components -->
 </body>
 </html>
